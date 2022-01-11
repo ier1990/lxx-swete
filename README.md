@@ -18,6 +18,7 @@ the MIT License (see "COPYING-Code").
 ## Format
 
 php files to import to mysql
+https://www.web-ministry.com/recycle/septuagint/
 
 ## Building
 
