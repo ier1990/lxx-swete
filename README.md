@@ -1,4 +1,4 @@
-# lxx-swete
+# lxx-swete_db
 
 The Old Testament in Greek According to the Septuagint, edited by
 Henry Barclay Swete.
@@ -17,7 +17,7 @@ the MIT License (see "COPYING-Code").
 
 ## Format
 
-**TODO** Describe the text file format here
+php files to import to mysql
 
 ## Building
 
