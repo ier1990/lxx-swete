@@ -11,7 +11,9 @@ The Septuagint (sept.zip) 1,797Kb
 The files contain one verse per line. Line breaks in a verse are indicated in some files using tildes. Each line is prefixed by the book, verse and chapter, separated by vertical bars.
 
 php files to import to mysql
-https://www.web-ministry.com/recycle/septuagint/
+https://www.sacred-texts.com/bib/osrc/index.htm
+https://www.recyclethebible.org/septuagint/
+
 
 ## Building
 
