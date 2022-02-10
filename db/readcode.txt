@@ -1,0 +1,167 @@
+
+
+database to import A1_orignal_byzantine_septuagint_bible
+Step 1 Septuagint_import - Step 2 Byzantine_import
+Will include those files later.
+
+Notes on the cleanitup($it) function used
+A1_orignal_byzantine_septuagint_bible.orig_text is trim() only for verse
+transliterator_transliterate("Any-Greek;", $unknown_orig_text); used in cleanitup($it)
+[functions.php] -> in code section below.
+
+//this function itself sure could use some cleanup on its on!
+  function cleanitup($it)
+  {
+    //global $antiXss;
+    $value=trim($it);
+    if($value==""){return false;}
+    $English=stripslashes($value);
+    //$English=strip_tags($English);
+  $English=str_replace('συναγαγ‘́τωσαν', "συναγαγω τωσαν", $English);
+  $English=str_replace("U+03F2", "ϲ", $English);
+  $English=str_replace("¨", "ϲ", $English);
+  $English=str_replace("(??)", "?", $English);
+  $English=str_replace("Α |", " ", $English);
+  $English=str_replace('"/ >', " ", $English);
+  $English=str_replace('|', " ", $English);
+  $English=str_replace('Υ̓', "Υ", $English);
+  $English=str_replace('‘́τ', "τ", $English);
+  $English=str_replace("‘", " ", $English);
+  $English=str_replace('‘́', " ", $English);
+
+  $English=str_replace('‘ὀφιμίν', "ὀφιμίν", $English);
+  $English=str_replace('δ‘ὲ', "δὲ ", $English);
+  $English=str_replace(" ́", " ", $English);
+  $English=str_replace('‘Υ̓', "Υ", $English);
+  $English=str_replace('‘Ως', "Ως", $English);
+
+  $English=str_replace('err;', " ", $English);
+  $English=str_replace("(17b-19)", " ", $English);
+  $English=str_replace("fVt", " fvt ", $English);
+  $English=str_replace("F", " ", $English);
+  $English=str_replace("£", " ", $English);
+  $English=str_replace("", " ", $English);
+  $English=str_replace("", " ", $English);
+  $English=str_replace("", " ", $English);
+  $English=str_replace("", " ", $English);
+  $English=str_replace("√", " ", $English);
+  $English=str_replace("⁽", " ", $English);
+  $English=str_replace("⁾", " ", $English);
+  $English=str_replace("ᵃ", " ", $English);
+  $English=str_replace("ⁱ", " ", $English);
+  $English=str_replace("—", " ", $English);
+  $English=str_replace("ᵇ", " ", $English);
+  $English=str_replace("ª", " ", $English);
+  $English=str_replace('¹', " ", $English);
+  $English=str_replace('²', " ", $English);
+  $English=str_replace('³', " ", $English);
+  $English=str_replace('⁴', " ", $English);
+  $English=str_replace('⁵', " ", $English);
+  $English=str_replace('⁶', " ", $English);
+  $English=str_replace('⁷', " ", $English);
+  $English=str_replace('⁸', " ", $English);
+  $English=str_replace('⁹', " ", $English);
+  $English=str_replace('⁰', " ", $English);
+  $English=str_replace('-', " ", $English);
+  $English=str_replace('_', " ", $English);
+  $English=str_replace('⁺', " ", $English);
+  $English=str_replace('⁻', " ", $English);
+  $English=str_replace('⁽', " ", $English);
+  $English=str_replace('⁾', " ", $English);
+  $English=str_replace("(", " ", $English);
+  $English=str_replace(")", " ", $English);
+  $English=str_replace("0", " ", $English);
+  $English=str_replace("1", " ", $English);
+  $English=str_replace("2", " ", $English);
+  $English=str_replace(")", " ", $English);
+  $English=str_replace("5", " ", $English);
+  $English=str_replace("2", " ", $English);
+  $English=str_replace("(", " ", $English);
+  $English=str_replace("3", " ", $English);
+  $English=str_replace("4", " ", $English);
+  $English=str_replace("5", " ", $English);
+  $English=str_replace("6", " ", $English);
+  $English=str_replace("7", " ", $English);
+  $English=str_replace("8", " ", $English);
+  $English=str_replace("9", " ", $English);
+  $English=str_replace("0", " ", $English);
+  $English=str_replace("/", " ", $English);
+  $English=str_replace("*", " ", $English);
+  $English=str_replace("'", " ", $English);
+  $English=str_replace('"', " ", $English);
+  $English=str_replace(';', " ", $English);
+  $English=str_replace(':', " ", $English);
+  $English=str_replace('·', " ", $English);
+  $English=str_replace(',', " ", $English);
+  //$English=str_replace('-', " ", $English);
+  $English=str_replace('.', " ", $English);
+  $English=str_replace("’", " ", $English);
+  $English=str_replace('<', " ", $English);
+  $English=str_replace(">", " ", $English);
+  $English=str_replace("^", " ", $English);
+  $English=str_replace("+", " ", $English);
+  $English=str_replace("°", " ", $English);
+
+  $English = preg_replace('/\s+/', ' ', $English);
+  //$English=trim($antiXss->xss_clean($English));
+  $English = transliterator_transliterate("Any-Greek;", $English);
+  return $English;
+  }
+
+
+
+  function get_fieldPDO($table,$search_field,$search_text,$return_field){
+    global $dbh;
+    $query='SELECT * FROM '.$table.' WHERE `'.$search_field.'` LIKE :'.$search_field.' ';
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam($search_field, $search_text , PDO::PARAM_STR, 64);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
+      //$stmt = null;
+       return $row[$return_field];
+     }//end while
+  return false;
+  }
+
+
+  function update_fieldPDO($table,$index_field,$index_value,$field_to_update,$data_to_update){
+    global $dbh;
+    $transflag=time();$db_message="";
+    $sql = "UPDATE $table SET $field_to_update=? WHERE ".$index_field."=?";
+    $stmt= $dbh->prepare($sql);
+    $executed = $stmt->execute([$data_to_update, $index_value]);
+    if($executed){
+      //$db_message = '
+Successfully saved row : '.$index_value.' to the database!!
+
+';
+    }
+    else{$db_message = '
+There was a problem saving row : '.$index_value.' to the database!!
+
+';}
+  return $db_message;
+  }
+
+  -- Adminer 4.7.1 MySQL dump
+
+  SET NAMES utf8;
+  SET time_zone = '+00:00';
+
+  SET NAMES utf8mb4;
+
+  DROP TABLE IF EXISTS `A1_orignal_byzantine_septuagint_bible`;
+  CREATE TABLE `A1_orignal_byzantine_septuagint_bible` (
+    `row` int(11) NOT NULL AUTO_INCREMENT,
+    `bookname` varchar(55) NOT NULL DEFAULT '',
+    `chapter` varchar(20) DEFAULT NULL,
+    `verse` varchar(20) DEFAULT NULL,
+    `orig_text` text NOT NULL,
+    `cleaned_text` text NOT NULL,
+    `notes` text NOT NULL,
+    `transflag` int(11) unsigned NOT NULL,
+    PRIMARY KEY (`row`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+  -- 2022-02-10 04:30:59
